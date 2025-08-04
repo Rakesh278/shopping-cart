@@ -1,0 +1,15 @@
+# Ensure shell scripts use LF (Unix-style)
+*.sh text eol=lf
+
+# Terraform files
+*.tf text eol=lf
+*.hcl text eol=lf
+
+# Jenkins pipeline scripts
+*.groovy text eol=lf
+
+# Markdown and config files
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
