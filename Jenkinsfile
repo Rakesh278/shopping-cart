@@ -9,14 +9,17 @@ pipeline {
         ECR_URL = "${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPO_NAME}"
     }
 
-     triggers {
+    triggers {
         githubPush() // Enables GitHub webhook trigger
     }
 
     stages {
         stage('Checkout') {
+            when {
+                branch pattern: "feature/.*"
+            }
             steps {
-                git branch: 'main', url: 'https://github.com/Rakesh278/shopping-cart.git'
+                checkout scm // checks out the current branch
             }
         }
 
