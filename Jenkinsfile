@@ -20,9 +20,7 @@ pipeline {
             }
         }
     }
-}
 
-    stages {
         stage('Checkout') {
             when {
                 branch pattern: "feature/.*"
