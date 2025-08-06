@@ -33,7 +33,7 @@ pipeline {
         stage('Build Java App') {
         steps {
             sh """
-            cd shoppin-cart
+            cd app
             mvn clean package
             """
         }
