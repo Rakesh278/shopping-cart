@@ -34,7 +34,7 @@ pipeline {
         steps {
             sh """
             cd shoppin-cart
-            ./mvnw clean package
+            mvn clean package
             """
         }
     }
