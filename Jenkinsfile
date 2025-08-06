@@ -31,10 +31,13 @@ pipeline {
         }
 
         stage('Build Java App') {
-            steps {
-                sh './build-setup.sh'
-            }
+        steps {
+            sh """
+            cd appshoppin-cart
+            ./mvnw clean package
+            """
         }
+    }
 
         stage('Docker Build & Push to ECR') {
             steps {
