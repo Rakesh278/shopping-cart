@@ -6,12 +6,22 @@ pipeline {
         REPO_NAME = 'shopping-cart'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         ACCOUNT_ID = credentials('aws-account-id') // stored in Jenkins credentials
-        ECR_URL = "${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPO_NAME}"
     }
 
     triggers {
         githubPush() // Enables GitHub webhook trigger
     }
+
+    stages {
+    stage('Init') {
+        steps {
+            script {
+                env.ECR_URL = "${env.ACCOUNT_ID}.dkr.ecr.${env.AWS_REGION}.amazonaws.com/${env.REPO_NAME}"
+            }
+        }
+    }
+    ...
+}
 
     stages {
         stage('Checkout') {
@@ -25,7 +35,7 @@ pipeline {
 
         stage('Build Java App') {
             steps {
-                sh './jenkins/build-setup.sh'
+                sh './build-setup.sh'
             }
         }
 
