@@ -5,7 +5,6 @@ pipeline {
         AWS_REGION = 'ap-south-1'
         REPO_NAME = 'shopping-cart'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
-        ACCOUNT_ID = credentials('aws-account-id') // stored in Jenkins credentials
     }
 
     triggers {
@@ -14,12 +13,19 @@ pipeline {
 
     stages {
     stage('Init') {
-        steps {
+    steps {
+        withCredentials([
+            string(credentialsId: 'aws-account-number', variable: 'ACCOUNT_ID'),
+            usernamePassword(credentialsId: 'aws-ecr-creds', usernameVariable: 'AWS_ACCESS_KEY', passwordVariable: 'AWS_SECRET_KEY')
+        ]) {
             script {
-                env.ECR_URL = "${env.ACCOUNT_ID}.dkr.ecr.${env.AWS_REGION}.amazonaws.com/${env.REPO_NAME}"
+                env.ECR_URL = "${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPO_NAME}"
+                env.AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY
+                env.AWS_SECRET_ACCESS_KEY = AWS_SECRET_KEY
             }
         }
     }
+}
 
         stage('Checkout') { 
             steps {
@@ -37,14 +43,15 @@ pipeline {
     }
 
         stage('Docker Build & Push to ECR') {
-            steps {
-                sh """
-                    aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_URL
-                    docker build -t $REPO_NAME:latest -t $ECR_URL:$IMAGE_TAG .
-                    docker push $ECR_URL:$IMAGE_TAG
-                """
-            }
-        }
+    steps {
+        sh '''
+            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_URL
+            docker build -t $REPO_NAME:latest -t $ECR_URL:$IMAGE_TAG .
+            docker push $ECR_URL:$IMAGE_TAG
+        '''
+    }
+}
+
 
         stage('Deploy to EKS') {
             steps {
