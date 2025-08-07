@@ -21,10 +21,7 @@ pipeline {
         }
     }
 
-        stage('Checkout') {
-            when {
-                branch pattern: "feature/.*"
-            }
+        stage('Checkout') { 
             steps {
                 checkout scm // checks out the current branch
             }
@@ -42,7 +39,7 @@ pipeline {
             steps {
                 sh """
                     aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_URL
-                    docker build -t $REPO_NAME:latest -t $ECR_URL:$IMAGE_TAG ./app
+                    docker build -t $REPO_NAME:latest -t $ECR_URL:$IMAGE_TAG .
                     docker push $ECR_URL:$IMAGE_TAG
                 """
             }
