@@ -22,7 +22,6 @@ pipeline {
                 env.ECR_URL = "${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPO_NAME}"
                 env.AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY
                 env.AWS_SECRET_ACCESS_KEY = AWS_SECRET_KEY
-                env.PATH = "/home/ec2-user/bin:${env.PATH}"
             }
         }
     }
@@ -56,15 +55,10 @@ pipeline {
 
         stage('Deploy to EKS') {
             steps {
-              sh """
-                export PATH=/home/ec2-user/bin:\$PATH
-                echo \$PATH
-                which kubectl
-                kubectl version --client
+                sh """
                 kubectl apply -f k8s/deployment.yaml
                 kubectl apply -f k8s/service.yaml
             """
-
             }
         }
     }
