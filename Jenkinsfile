@@ -56,12 +56,15 @@ pipeline {
 
         stage('Deploy to EKS') {
             steps {
-                sh """
-                    export PATH=/home/ec2-user/bin:\$PATH
-                    sed -i 's|<your-ecr-url>|$ECR_URL:$IMAGE_TAG|' k8s/deployment.yaml
-                    kubectl apply -f k8s/deployment.yaml
-                    kubectl apply -f k8s/service.yaml
-                """ 
+              sh """
+                export PATH=/home/ec2-user/bin:\$PATH
+                echo \$PATH
+                which kubectl
+                kubectl version --client
+                kubectl apply -f k8s/deployment.yaml
+                kubectl apply -f k8s/service.yaml
+            """
+
             }
         }
     }
