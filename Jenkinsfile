@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         AWS_REGION = 'ap-south-1'
-        REPO_NAME = 'shopping-cart'
+        REPO_NAME = 'shopping-cart-app'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
     }
 
