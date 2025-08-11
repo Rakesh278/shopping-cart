@@ -1,0 +1,42 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.log
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.lock.hcl
+
+# Jenkins
+*.jenkins
+*.groovy
+*.bak
+
+# Shell scripts
+*.sh~
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node/npm (if used)
+node_modules/
+
+# Python (if used)
+__pycache__/
+*.pyc
+
+# Misc
+.env
+*.bak
+*.tmp
